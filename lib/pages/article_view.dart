@@ -8,26 +8,42 @@ class ArticleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final WebViewController controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse(blogUrl));
+    final WebViewController controller = _createWebViewController();
 
     return Scaffold(
-        appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Flutter"),
-              Text(
-                "News",
-                style:
-                    TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-              )
-            ],
-          ),
-          centerTitle: true,
-          elevation: 0.0,
-        ),
-        body: WebViewWidget(controller: controller));
+      appBar: _buildAppBar(),
+      body: _buildBody(controller),
+    );
+  }
+
+  WebViewController _createWebViewController() {
+    return WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadRequest(Uri.parse(blogUrl));
+  }
+
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      title: _buildAppBarTitle(),
+      centerTitle: true,
+      elevation: 0.0,
+    );
+  }
+
+  Widget _buildAppBarTitle() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Flutter"),
+        Text(
+          "News",
+          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+        )
+      ],
+    );
+  }
+
+  Widget _buildBody(WebViewController controller) {
+    return WebViewWidget(controller: controller);
   }
 }
